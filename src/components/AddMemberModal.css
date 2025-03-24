@@ -1,0 +1,72 @@
+.add-member-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 10px 0;
+}
+
+.search-section {
+  margin-bottom: 10px;
+}
+
+.members-list-container {
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  background-color: #f8fafc;
+}
+
+.members-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.member-item {
+  padding: 12px 15px;
+  border-bottom: 1px solid #e2e8f0;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.member-item:last-child {
+  border-bottom: none;
+}
+
+.member-item:hover {
+  background-color: #f1f5f9;
+}
+
+.member-item.selected {
+  background-color: #e0f2fe;
+  border-left: 3px solid #0369a1;
+}
+
+.member-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.member-name {
+  font-weight: 500;
+  color: #334155;
+}
+
+.member-email {
+  font-size: 0.9rem;
+  color: #64748b;
+}
+
+.loading-message, .no-results {
+  padding: 20px;
+  text-align: center;
+  color: #64748b;
+}
+
+.modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 10px;
+}

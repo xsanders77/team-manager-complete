@@ -1,0 +1,159 @@
+.child-management-page {
+  padding: 20px;
+}
+
+.child-management-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.child-management-header h1 {
+  margin: 0;
+  font-size: 28px;
+  color: #333;
+}
+
+.new-child-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #555;
+}
+
+.select-input {
+  height: 40px;
+  padding: 0 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: white;
+  font-size: 14px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.children-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.no-children {
+  text-align: center;
+  padding: 30px 0;
+  color: #777;
+}
+
+.child-card {
+  padding: 10px;
+}
+
+.child-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.child-card__header h2 {
+  margin: 0;
+  font-size: 22px;
+  color: #333;
+}
+
+.child-age {
+  font-size: 16px;
+  font-weight: 500;
+  color: #555;
+  background-color: #f0f0f0;
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+
+.child-card__content {
+  margin-bottom: 15px;
+}
+
+.child-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.child-info__item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.label {
+  font-weight: bold;
+  color: #555;
+  font-size: 14px;
+}
+
+.value {
+  color: #333;
+}
+
+.attendance-bar {
+  height: 10px;
+  background-color: #f0f0f0;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-top: 5px;
+}
+
+.attendance-fill {
+  height: 100%;
+  background-color: #2ecc71;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 10px;
+  color: white;
+  line-height: 10px;
+}
+
+.child-card__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+}
+
+@media (max-width: 768px) {
+  .child-management-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  
+  .child-card__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .child-card__actions {
+    flex-direction: column;
+  }
+}

@@ -1,0 +1,130 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.badge-pill {
+  border-radius: 50px;
+}
+
+/* Sizes */
+.badge-small {
+  padding: 2px 6px;
+  font-size: 0.7rem;
+}
+
+.badge-medium {
+  padding: 4px 8px;
+  font-size: 0.8rem;
+}
+
+.badge-large {
+  padding: 6px 12px;
+  font-size: 0.9rem;
+}
+
+/* Solid variants */
+.badge-primary {
+  background-color: #4dabf7;
+  color: white;
+}
+
+.badge-secondary {
+  background-color: #adb5bd;
+  color: white;
+}
+
+.badge-success {
+  background-color: #40c057;
+  color: white;
+}
+
+.badge-danger {
+  background-color: #fa5252;
+  color: white;
+}
+
+.badge-warning {
+  background-color: #fd7e14;
+  color: white;
+}
+
+.badge-info {
+  background-color: #15aabf;
+  color: white;
+}
+
+/* Outline variants */
+.badge-outline.badge-primary {
+  background-color: transparent;
+  color: #4dabf7;
+  border: 1px solid #4dabf7;
+}
+
+.badge-outline.badge-secondary {
+  background-color: transparent;
+  color: #adb5bd;
+  border: 1px solid #adb5bd;
+}
+
+.badge-outline.badge-success {
+  background-color: transparent;
+  color: #40c057;
+  border: 1px solid #40c057;
+}
+
+.badge-outline.badge-danger {
+  background-color: transparent;
+  color: #fa5252;
+  border: 1px solid #fa5252;
+}
+
+.badge-outline.badge-warning {
+  background-color: transparent;
+  color: #fd7e14;
+  border: 1px solid #fd7e14;
+}
+
+.badge-outline.badge-info {
+  background-color: transparent;
+  color: #15aabf;
+  border: 1px solid #15aabf;
+}
+
+/* Clickable badges */
+.badge-clickable {
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.badge-clickable:hover {
+  opacity: 0.8;
+  transform: translateY(-1px);
+}
+
+.badge-clickable:active {
+  transform: translateY(0);
+}
+
+/* Status-specific badges for attendance */
+.badge-attending {
+  background-color: #40c057;
+  color: white;
+}
+
+.badge-declined {
+  background-color: #fa5252;
+  color: white;
+}
+
+.badge-pending {
+  background-color: #fd7e14;
+  color: white;
+}

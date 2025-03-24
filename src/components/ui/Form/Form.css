@@ -1,0 +1,149 @@
+.form-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-label {
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: #495057;
+}
+
+.form-input {
+  padding: 10px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-input:focus {
+  border-color: #4dabf7;
+  box-shadow: 0 0 0 3px rgba(77, 171, 247, 0.25);
+  outline: none;
+}
+
+.form-input.error {
+  border-color: #fa5252;
+}
+
+.form-input.error:focus {
+  box-shadow: 0 0 0 3px rgba(250, 82, 82, 0.25);
+}
+
+.form-error {
+  color: #fa5252;
+  font-size: 0.8rem;
+  margin-top: 4px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+.form-submit-button {
+  padding: 10px 20px;
+  background-color: #4dabf7;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.form-submit-button:hover {
+  background-color: #339af0;
+}
+
+.form-submit-button:disabled {
+  background-color: #adb5bd;
+  cursor: not-allowed;
+}
+
+.form-message {
+  padding: 12px 16px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  font-size: 0.9rem;
+}
+
+.error-message {
+  background-color: #fff5f5;
+  border: 1px solid #ffc9c9;
+  color: #e03131;
+}
+
+.success-message {
+  background-color: #ebfbee;
+  border: 1px solid #b2f2bb;
+  color: #2b8a3e;
+}
+
+/* Loading indicator */
+.loading-indicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+}
+
+.loading-dot {
+  width: 6px;
+  height: 6px;
+  background-color: white;
+  border-radius: 50%;
+  animation: dot-pulse 1.5s infinite ease-in-out;
+}
+
+.loading-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.loading-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes dot-pulse {
+  0%, 80%, 100% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .form-container {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-actions {
+    justify-content: center;
+  }
+  
+  .form-submit-button {
+    width: 100%;
+  }
+}

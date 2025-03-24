@@ -1,0 +1,146 @@
+.user-management-page {
+  padding: 20px;
+}
+
+.user-management-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.user-management-header h1 {
+  margin: 0;
+  font-size: 28px;
+  color: #333;
+}
+
+.new-user-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  padding: 10px;
+}
+
+.new-user-form .form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.new-user-form label {
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #555;
+}
+
+.new-user-form .select-input {
+  height: 40px;
+  padding: 0 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: white;
+  font-size: 14px;
+}
+
+.form-actions {
+  grid-column: span 2;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.users-table-container {
+  overflow-x: auto;
+}
+
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.users-table th,
+.users-table td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.users-table th {
+  background-color: #f5f5f5;
+  font-weight: 600;
+  color: #555;
+}
+
+.users-table tr:hover {
+  background-color: #f9f9f9;
+}
+
+.no-users {
+  text-align: center;
+  padding: 24px;
+  color: #777;
+}
+
+.user-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.role-select {
+  padding: 6px 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: white;
+  font-size: 14px;
+}
+
+.role-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8em;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.role-admin {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.role-trainer {
+  background-color: #3498db;
+  color: white;
+}
+
+.role-player {
+  background-color: #2ecc71;
+  color: white;
+}
+
+.role-parent {
+  background-color: #f39c12;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .new-user-form {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    grid-column: 1;
+  }
+
+  .user-management-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .users-table th:nth-child(2),
+  .users-table td:nth-child(2) {
+    display: none;
+  }
+}

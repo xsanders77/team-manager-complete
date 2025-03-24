@@ -1,0 +1,125 @@
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-header {
+  background-color: #1f2937;
+  color: white;
+  padding: 0 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 64px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.app-header__logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.app-header__nav ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.app-header__nav li {
+  margin: 0 0.5rem;
+}
+
+.app-header__nav a {
+  color: white;
+  text-decoration: none;
+  padding: 0.5rem;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.app-header__nav a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.app-header__user {
+  display: flex;
+  align-items: center;
+}
+
+.app-header__user span {
+  margin-right: 1rem;
+}
+
+.app-header__logout {
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.app-header__logout:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.app-content {
+  flex: 1;
+  padding: 2rem;
+  background-color: #f3f4f6;
+}
+
+.app-footer {
+  background-color: #1f2937;
+  color: white;
+  padding: 1rem;
+  text-align: center;
+}
+
+.app-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.loader {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3b82f6;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+  .app-header {
+    flex-direction: column;
+    height: auto;
+    padding: 1rem;
+  }
+  
+  .app-header__logo {
+    margin-bottom: 1rem;
+  }
+  
+  .app-header__nav ul {
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+  
+  .app-content {
+    padding: 1rem;
+  }
+}

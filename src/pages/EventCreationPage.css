@@ -1,0 +1,151 @@
+.event-creation-page {
+  padding: 20px;
+}
+
+.event-creation-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.event-creation-header h1 {
+  margin: 0;
+  font-size: 28px;
+  color: #333;
+}
+
+.event-type-selector {
+  margin-bottom: 20px;
+}
+
+.event-type-options {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.event-type-option {
+  display: flex;
+  align-items: center;
+  padding: 10px 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.event-type-option.selected {
+  border-color: #3498db;
+  background-color: rgba(52, 152, 219, 0.1);
+}
+
+.event-type-option input {
+  margin-right: 8px;
+}
+
+.event-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.form-row.full-width {
+  grid-template-columns: 1fr;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #555;
+}
+
+.select-input {
+  height: 40px;
+  padding: 0 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: white;
+  font-size: 14px;
+}
+
+.textarea-input {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  resize: vertical;
+}
+
+.series-options {
+  margin-top: 10px;
+  padding-top: 20px;
+  border-top: 1px dashed #ddd;
+}
+
+.series-options h3 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-size: 18px;
+  color: #555;
+}
+
+.weekday-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.weekday-option {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.weekday-option:hover {
+  background-color: #f9f9f9;
+}
+
+.weekday-option input {
+  margin-right: 8px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+@media (max-width: 768px) {
+  .event-creation-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .event-type-options {
+    flex-direction: column;
+    gap: 10px;
+  }
+}

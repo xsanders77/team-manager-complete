@@ -1,0 +1,49 @@
+.alert {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+.alert__content {
+  flex: 1;
+}
+
+.alert__close {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 0.5rem;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.alert__close:hover {
+  opacity: 1;
+}
+
+/* Varianten */
+.alert--success {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.alert--error {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+.alert--warning {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.alert--info {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
