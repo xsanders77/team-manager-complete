@@ -3,6 +3,7 @@ const Team = require("../models/Team"); // Modell für Teams
 const Trainer = require("../models/Trainer"); // Modell für Trainer
 const Player = require("../models/Player"); // Modell für Spieler
 const authMiddleware = require("../middleware/authMiddleware"); // Authentifizierungsmiddleware
+const idConversionMiddleware = require("../middleware/idConversionMiddleware"); // ID-Konvertierungsmiddleware
 
 const adminMiddleware = (req, res, next) => {
   if (req.user.role !== "admin") {
@@ -62,7 +63,7 @@ router.delete("/teams/:id", authMiddleware, adminMiddleware, async (req, res) =>
 });
 
 // Trainer zu Team hinzufügen
-router.post("/teams/:teamId/trainers", authMiddleware, async (req, res) => {
+router.post("/teams/:teamId/trainers", authMiddleware, idConversionMiddleware, async (req, res) => {
   const { trainerId } = req.body;
   
   console.log("Trainer hinzufügen Request:", {
@@ -101,10 +102,18 @@ router.post("/teams/:teamId/trainers", authMiddleware, async (req, res) => {
     const populatedTeam = await Team.findById(req.params.teamId)
       .populate({
         path: 'trainers',
-        match: { role: 'trainer' },
-        select: '-password' // Passwort aus Sicherheitsgründen ausschließen
+        populate: {
+          path: 'user',
+          select: '-password' // Passwort aus Sicherheitsgründen ausschließen
+        }
       })
-      .populate('players');
+      .populate({
+        path: 'players',
+        populate: {
+          path: 'user',
+          select: '-password' // Passwort aus Sicherheitsgründen ausschließen
+        }
+      });
     
     console.log("Populated Team:", JSON.stringify(populatedTeam));
 
@@ -116,7 +125,7 @@ router.post("/teams/:teamId/trainers", authMiddleware, async (req, res) => {
 });
 
 // Spieler zu Team hinzufügen
-router.post("/teams/:teamId/players", authMiddleware, async (req, res) => {
+router.post("/teams/:teamId/players", authMiddleware, idConversionMiddleware, async (req, res) => {
   const { playerId } = req.body;
   
   console.log("Spieler hinzufügen Request:", {
@@ -155,10 +164,18 @@ router.post("/teams/:teamId/players", authMiddleware, async (req, res) => {
     const populatedTeam = await Team.findById(req.params.teamId)
       .populate({
         path: 'trainers',
-        match: { role: 'trainer' },
-        select: '-password' // Passwort aus Sicherheitsgründen ausschließen
+        populate: {
+          path: 'user',
+          select: '-password' // Passwort aus Sicherheitsgründen ausschließen
+        }
       })
-      .populate('players');
+      .populate({
+        path: 'players',
+        populate: {
+          path: 'user',
+          select: '-password' // Passwort aus Sicherheitsgründen ausschließen
+        }
+      });
     
     console.log("Populated Team:", JSON.stringify(populatedTeam));
 

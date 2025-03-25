@@ -215,7 +215,6 @@ const TeamDetailPage = () => {
       });
     }
   };
-
   // Hilfsfunktion zur Extraktion spezifischer Fehlermeldungen
   const getErrorMessage = (error) => {
     if (!error) return 'Unbekannter Fehler';
@@ -353,7 +352,6 @@ const TeamDetailPage = () => {
       </div>
     );
   }
-
   // Verwende Fallback-Daten, wenn API nicht verfügbar ist und Fallback aktiviert wurde
   const displayTeam = useFallbackData ? fallbackTeam : team;
 
@@ -499,105 +497,63 @@ const TeamDetailPage = () => {
                       <span key={index} className="tag">{tag}</span>
                     ))
                   ) : (
-                    <span className="no-data">Keine Tags vorhanden</span>
+                    <span className="no-tags">Keine Tags vorhanden</span>
                   )}
                 </div>
               </div>
-              {useFallbackData && (
-                <div className="offline-notice">
-                  <Alert 
-                    type="warning" 
-                    message="Sie befinden sich im Offline-Modus. Die angezeigten Daten sind möglicherweise nicht aktuell." 
-                  />
-                  <Button 
-                    onClick={() => {
-                      setUseFallbackData(false);
-                      window.location.reload();
-                    }}
-                    className="retry-button"
-                  >
-                    Erneut versuchen
-                  </Button>
-                </div>
-              )}
             </div>
           )}
         </Card>
-        
         <Card title="Trainer">
-          <div className="team-members">
-            {displayTeam.trainers && displayTeam.trainers.length > 0 ? (
-              <ul className="members-list">
-                {displayTeam.trainers.map((trainer) => (
-                  <li key={trainer._id || trainer.id} className="member-item">
-                    <div className="member-info">
-                      <span className="member-name">{trainer.name || trainer.firstName + ' ' + trainer.lastName}</span>
-                      <span className="member-email">{trainer.email}</span>
-                    </div>
-                    {isAdmin && !useFallbackData && (
-                      <Button 
-                        variant="danger" 
-                        size="small"
-                        onClick={() => {/* Trainer entfernen Logik */}}
-                      >
-                        Entfernen
-                      </Button>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="no-data">Keine Trainer zugewiesen</p>
-            )}
-            
-            {isAdmin && !useFallbackData && !showAddTrainerForm && (
-              <div className="add-member-section">
+          <div className="members-section">
+            <div className="members-header">
+              <h3>Trainer des Teams</h3>
+              {isAdmin && !useFallbackData && (
                 <Button 
-                  onClick={() => setShowAddTrainerForm(true)}
+                  onClick={() => {
+                    setShowAddTrainerForm(!showAddTrainerForm);
+                    setSelectedTrainerId('');
+                    setTrainerSearchTerm('');
+                  }}
+                  size="small"
                 >
-                  Trainer hinzufügen
+                  {showAddTrainerForm ? 'Abbrechen' : 'Trainer hinzufügen'}
                 </Button>
-              </div>
-            )}
-
-            {isAdmin && !useFallbackData && showAddTrainerForm && (
-              <div className="inline-form">
-                <h3>Trainer hinzufügen</h3>
-                
-                <div className="search-section">
+              )}
+            </div>
+            
+            {showAddTrainerForm && !useFallbackData && (
+              <div className="add-member-form">
+                <h4>Trainer zum Team hinzufügen</h4>
+                <div className="form-row">
                   <Input
                     id="trainerSearch"
                     name="trainerSearch"
-                    label="Trainer suchen"
-                    placeholder="Name oder E-Mail eingeben"
+                    placeholder="Trainer suchen..."
                     value={trainerSearchTerm}
                     onChange={(e) => setTrainerSearchTerm(e.target.value)}
                   />
                 </div>
-                
-                <div className="select-section">
+                <div className="form-row">
                   <label htmlFor="trainerSelect">Trainer auswählen:</label>
-                  <select 
-                    id="trainerSelect" 
-                    value={selectedTrainerId} 
+                  <select
+                    id="trainerSelect"
+                    value={selectedTrainerId}
                     onChange={(e) => setSelectedTrainerId(e.target.value)}
-                    className="form-select"
+                    className="select-input"
                   >
                     <option value="">-- Bitte wählen --</option>
-                    {isLoadingUsers ? (
-                      <option disabled>Lade Trainer...</option>
-                    ) : filteredTrainers.length === 0 ? (
+                    {filteredTrainers.length === 0 ? (
                       <option disabled>Keine verfügbaren Trainer gefunden</option>
                     ) : (
                       filteredTrainers.map(trainer => (
                         <option key={trainer._id || trainer.id} value={trainer._id || trainer.id}>
-                          {trainer.firstName} {trainer.lastName} ({trainer.email})
+                          {trainer.firstName || (trainer.user && trainer.user.firstName)} {trainer.lastName || (trainer.user && trainer.user.lastName)} ({trainer.email || (trainer.user && trainer.user.email)})
                         </option>
                       ))
                     )}
                   </select>
                 </div>
-                
                 <div className="form-actions">
                   <Button 
                     onClick={handleAddTrainer}
@@ -605,38 +561,26 @@ const TeamDetailPage = () => {
                   >
                     {addTrainerMutation.isPending ? 'Wird hinzugefügt...' : 'Hinzufügen'}
                   </Button>
-                  <Button 
-                    variant="secondary" 
-                    onClick={() => {
-                      setShowAddTrainerForm(false);
-                      setSelectedTrainerId('');
-                      setTrainerSearchTerm('');
-                    }}
-                    disabled={addTrainerMutation.isPending}
-                  >
-                    Abbrechen
-                  </Button>
                 </div>
               </div>
             )}
-          </div>
-        </Card>
-        
-        <Card title="Spieler">
-          <div className="team-members">
-            {displayTeam.players && displayTeam.players.length > 0 ? (
+            
+            {displayTeam.trainers && displayTeam.trainers.length > 0 ? (
               <ul className="members-list">
-                {displayTeam.players.map((player) => (
-                  <li key={player._id || player.id} className="member-item">
+                {displayTeam.trainers.map((trainer) => (
+                  <li key={trainer._id || trainer.id} className="member-item">
                     <div className="member-info">
-                      <span className="member-name">{player.name || player.firstName + ' ' + player.lastName}</span>
-                      {player.email && <span className="member-email">{player.email}</span>}
+                      <span className="member-name">{trainer.user ? (trainer.user.name || trainer.user.firstName + ' ' + trainer.user.lastName) : 'Unbekannter Trainer'}</span>
+                      <span className="member-email">{trainer.user ? trainer.user.email : ''}</span>
                     </div>
-                    {isTrainer && !useFallbackData && (
+                    {isAdmin && !useFallbackData && (
                       <Button 
                         variant="danger" 
                         size="small"
-                        onClick={() => {/* Spieler entfernen Logik */}}
+                        onClick={() => {
+                          // Hier würde die Funktion zum Entfernen des Trainers aufgerufen werden
+                          alert('Funktion zum Entfernen des Trainers noch nicht implementiert');
+                        }}
                       >
                         Entfernen
                       </Button>
@@ -645,57 +589,61 @@ const TeamDetailPage = () => {
                 ))}
               </ul>
             ) : (
-              <p className="no-data">Keine Spieler zugewiesen</p>
+              <p className="no-members">Keine Trainer zugewiesen</p>
             )}
-            
-            {isTrainer && !useFallbackData && !showAddPlayerForm && (
-              <div className="add-member-section">
+          </div>
+        </Card>
+        
+        <Card title="Spieler">
+          <div className="members-section">
+            <div className="members-header">
+              <h3>Spieler des Teams</h3>
+              {isTrainer && !useFallbackData && (
                 <Button 
-                  onClick={() => setShowAddPlayerForm(true)}
+                  onClick={() => {
+                    setShowAddPlayerForm(!showAddPlayerForm);
+                    setSelectedPlayerId('');
+                    setPlayerSearchTerm('');
+                  }}
+                  size="small"
                 >
-                  Spieler hinzufügen
+                  {showAddPlayerForm ? 'Abbrechen' : 'Spieler hinzufügen'}
                 </Button>
-              </div>
-            )}
-
-            {isTrainer && !useFallbackData && showAddPlayerForm && (
-              <div className="inline-form">
-                <h3>Spieler hinzufügen</h3>
-                
-                <div className="search-section">
+              )}
+            </div>
+            
+            {showAddPlayerForm && !useFallbackData && (
+              <div className="add-member-form">
+                <h4>Spieler zum Team hinzufügen</h4>
+                <div className="form-row">
                   <Input
                     id="playerSearch"
                     name="playerSearch"
-                    label="Spieler suchen"
-                    placeholder="Name oder E-Mail eingeben"
+                    placeholder="Spieler suchen..."
                     value={playerSearchTerm}
                     onChange={(e) => setPlayerSearchTerm(e.target.value)}
                   />
                 </div>
-                
-                <div className="select-section">
+                <div className="form-row">
                   <label htmlFor="playerSelect">Spieler auswählen:</label>
-                  <select 
-                    id="playerSelect" 
-                    value={selectedPlayerId} 
+                  <select
+                    id="playerSelect"
+                    value={selectedPlayerId}
                     onChange={(e) => setSelectedPlayerId(e.target.value)}
-                    className="form-select"
+                    className="select-input"
                   >
                     <option value="">-- Bitte wählen --</option>
-                    {isLoadingUsers ? (
-                      <option disabled>Lade Spieler...</option>
-                    ) : filteredPlayers.length === 0 ? (
+                    {filteredPlayers.length === 0 ? (
                       <option disabled>Keine verfügbaren Spieler gefunden</option>
                     ) : (
                       filteredPlayers.map(player => (
                         <option key={player._id || player.id} value={player._id || player.id}>
-                          {player.firstName} {player.lastName} ({player.email})
+                          {player.firstName || (player.user && player.user.firstName)} {player.lastName || (player.user && player.user.lastName)} ({player.email || (player.user && player.user.email)})
                         </option>
                       ))
                     )}
                   </select>
                 </div>
-                
                 <div className="form-actions">
                   <Button 
                     onClick={handleAddPlayer}
@@ -703,37 +651,71 @@ const TeamDetailPage = () => {
                   >
                     {addPlayerMutation.isPending ? 'Wird hinzugefügt...' : 'Hinzufügen'}
                   </Button>
-                  <Button 
-                    variant="secondary" 
-                    onClick={() => {
-                      setShowAddPlayerForm(false);
-                      setSelectedPlayerId('');
-                      setPlayerSearchTerm('');
-                    }}
-                    disabled={addPlayerMutation.isPending}
-                  >
-                    Abbrechen
-                  </Button>
                 </div>
               </div>
+            )}
+            
+            {displayTeam.players && displayTeam.players.length > 0 ? (
+              <ul className="members-list">
+                {displayTeam.players.map((player) => (
+                  <li key={player._id || player.id} className="member-item">
+                    <div className="member-info">
+                      <span className="member-name">{player.user ? (player.user.name || player.user.firstName + ' ' + player.user.lastName) : 'Unbekannter Spieler'}</span>
+                      {player.user && player.user.email && <span className="member-email">{player.user.email}</span>}
+                    </div>
+                    {isTrainer && !useFallbackData && (
+                      <Button 
+                        variant="danger" 
+                        size="small"
+                        onClick={() => {
+                          // Hier würde die Funktion zum Entfernen des Spielers aufgerufen werden
+                          alert('Funktion zum Entfernen des Spielers noch nicht implementiert');
+                        }}
+                      >
+                        Entfernen
+                      </Button>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="no-members">Keine Spieler zugewiesen</p>
             )}
           </div>
         </Card>
         
         <Card title="Termine">
-          <div className="team-events">
-            {/* Hier würden die Termine des Teams angezeigt werden */}
-            <p className="no-data">Keine Termine vorhanden</p>
-            
-            {isTrainer && !useFallbackData && (
-              <div className="add-event-section">
+          <div className="events-section">
+            <div className="events-header">
+              <h3>Termine des Teams</h3>
+              {isTrainer && !useFallbackData && (
                 <Button 
-                  onClick={() => navigate(`/events/create?teamId=${teamId}`)}
+                  onClick={() => {
+                    // Hier würde die Navigation zur Terminverwaltung erfolgen
+                    alert('Funktion zur Terminverwaltung noch nicht implementiert');
+                  }}
+                  size="small"
                 >
                   Termin erstellen
                 </Button>
-              </div>
-            )}
+              )}
+            </div>
+            
+            <p className="no-events">Keine Termine vorhanden</p>
+            
+            {/* Hier würde die Liste der Termine angezeigt werden */}
+          </div>
+        </Card>
+        
+        <Card title="Statistiken">
+          <div className="statistics-section">
+            <div className="statistics-header">
+              <h3>Anwesenheitsstatistiken</h3>
+            </div>
+            
+            <p className="no-statistics">Keine Statistiken verfügbar</p>
+            
+            {/* Hier würden die Statistiken angezeigt werden */}
           </div>
         </Card>
       </div>

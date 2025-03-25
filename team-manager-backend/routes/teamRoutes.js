@@ -1,6 +1,8 @@
 const express = require("express");
 const Team = require("../models/Team"); // Importiere das Team-Modell
 const User = require("../models/User"); // Importiere das User-Modell
+const Trainer = require("../models/Trainer"); // Importiere das Trainer-Modell
+const Player = require("../models/Player"); // Importiere das Player-Modell
 const router = express.Router();
 
 // Alle Teams abrufen
@@ -9,10 +11,18 @@ router.get("/", async (req, res) => {
     const teams = await Team.find()
       .populate({
         path: 'trainers',
-        match: { role: 'trainer' },
-        select: '-password' // Passwort aus Sicherheitsgründen ausschließen
+        populate: {
+          path: 'user',
+          select: '-password' // Passwort aus Sicherheitsgründen ausschließen
+        }
       })
-      .populate('players');
+      .populate({
+        path: 'players',
+        populate: {
+          path: 'user',
+          select: '-password' // Passwort aus Sicherheitsgründen ausschließen
+        }
+      });
     
     console.log("Alle Teams abgerufen:", teams.length);
     res.json(teams);
@@ -40,10 +50,18 @@ router.get("/:id", async (req, res) => {
     const team = await Team.findById(req.params.id)
       .populate({
         path: 'trainers',
-        match: { role: 'trainer' },
-        select: '-password' // Passwort aus Sicherheitsgründen ausschließen
+        populate: {
+          path: 'user',
+          select: '-password' // Passwort aus Sicherheitsgründen ausschließen
+        }
       })
-      .populate('players');
+      .populate({
+        path: 'players',
+        populate: {
+          path: 'user',
+          select: '-password' // Passwort aus Sicherheitsgründen ausschließen
+        }
+      });
     
     if (!team) return res.status(404).json({ message: "Team nicht gefunden" });
     
@@ -66,10 +84,18 @@ router.put("/:id", async (req, res) => {
     )
     .populate({
       path: 'trainers',
-      match: { role: 'trainer' },
-      select: '-password' // Passwort aus Sicherheitsgründen ausschließen
+      populate: {
+        path: 'user',
+        select: '-password' // Passwort aus Sicherheitsgründen ausschließen
+      }
     })
-    .populate('players');
+    .populate({
+      path: 'players',
+      populate: {
+        path: 'user',
+        select: '-password' // Passwort aus Sicherheitsgründen ausschließen
+      }
+    });
     
     if (!updatedTeam) return res.status(404).json({ message: "Team nicht gefunden" });
     
