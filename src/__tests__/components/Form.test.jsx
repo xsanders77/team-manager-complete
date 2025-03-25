@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import Form from '../../../components/ui/Form/Form';
+import Form from '../../components/ui/Form/Form';
 
 describe('Form Component', () => {
   const mockOnSubmit = jest.fn();

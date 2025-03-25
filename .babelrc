@@ -1,0 +1,9 @@
+{
+    "presets": ["@babel/preset-env", "@babel/preset-react"],
+    "plugins": [
+      ["transform-vite-meta-env", {
+        "envNames": ["VITE_API_URL"] // Oder alle Variablen, die du brauchst
+      }]
+    ]
+  }
+  

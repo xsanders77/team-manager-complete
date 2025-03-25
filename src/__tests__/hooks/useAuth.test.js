@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react';
-import { useAuth } from '../../../hooks/useAuth';
-import { AuthContext } from '../../../context/AuthContext';
+import { useAuth } from '../../hooks/useAuth';
+import { AuthContext } from '../../../contexts/AuthContext';
 import React from 'react';
 
 // Mock des AuthContext

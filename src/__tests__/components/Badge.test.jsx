@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import Badge from '../../../components/ui/Badge/Badge';
+import Badge from '../../components/ui/Badge/Badge';
 
 describe('Badge Component', () => {
   const mockOnClick = jest.fn();

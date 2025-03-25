@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import Table from '../../../components/ui/Table/Table';
+import Table from '../../components/ui/Table/Table';
 
 describe('Table Component', () => {
   const mockColumns = [

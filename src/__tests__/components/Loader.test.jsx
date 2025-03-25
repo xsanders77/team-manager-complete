@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import Loader from '../../../components/ui/Loader/Loader';
+import Loader from '../../components/ui/Loader/Loader';
 
 describe('Loader Component', () => {
   test('should render with default props', () => {

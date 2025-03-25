@@ -2,12 +2,12 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import ParentChildManagementPage from '../../pages/ParentChildManagementPage';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../contexts/AuthContext';
 import { useParentChildren, useCreatePlayer, useDeletePlayer } from '../../hooks/usePlayers';
 import { useTeams } from '../../hooks/useTeams';
 
 // Mock der Hooks
-jest.mock('../../context/AuthContext', () => ({
+jest.mock('../../contexts/AuthContext', () => ({
   useAuth: jest.fn()
 }));
 
