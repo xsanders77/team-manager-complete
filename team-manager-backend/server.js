@@ -14,12 +14,17 @@ dotenv.config();
 
 const app = express();
 
+// Genereller Log für eingehende Anfragen
+app.use((req, res, next) => {
+  console.log(`Anfrage: ${req.method} ${req.url}`);
+  next();
+});
+
 // Middleware: CORS und JSON-Parser
 app.use(cors());
 app.use(express.json());
 
 // Middleware zum Debuggen des Raw-Body
-
 
 // Benutzer-API-Routen
 app.use("/api/users", userRoutes);
@@ -40,12 +45,6 @@ mongoose
 // Test-Route
 app.get("/test", (req, res) => {
   res.status(200).json({ message: "Test-Route funktioniert!" });
-});
-
-// Genereller Log für eingehende Anfragen
-app.use((req, res, next) => {
-  console.log(`Anfrage: ${req.method} ${req.url}`);
-  next();
 });
 
 // Fehlerbehandlung für nicht gefundene Routen

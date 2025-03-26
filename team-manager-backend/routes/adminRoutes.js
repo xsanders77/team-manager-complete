@@ -30,12 +30,12 @@ router.post("/teams", authMiddleware, adminMiddleware, async (req, res) => {
 
 // Team bearbeiten
 router.put("/teams/:id", authMiddleware, adminMiddleware, async (req, res) => {
-  const { name } = req.body;
+  const { name, tags } = req.body;
 
   try {
     const updatedTeam = await Team.findByIdAndUpdate(
       req.params.id,
-      { name },
+      { name, tags },
       { new: true }
     );
     if (!updatedTeam) {
