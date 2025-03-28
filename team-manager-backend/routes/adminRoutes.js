@@ -29,24 +29,49 @@ router.post("/teams", authMiddleware, adminMiddleware, async (req, res) => {
 });
 
 // Team bearbeiten
+
 router.put("/teams/:id", authMiddleware, adminMiddleware, async (req, res) => {
-  const { name, tags } = req.body;
+  const { name, ageGroup, tags } = req.body;
 
   try {
+    const updateData = {};
+    if (name !== undefined) updateData.name = name;
+    if (ageGroup !== undefined) updateData.ageGroup = ageGroup;
+    if (tags !== undefined) updateData.tags = tags;
+
     const updatedTeam = await Team.findByIdAndUpdate(
       req.params.id,
-      { name, tags },
+      updateData,
       { new: true }
-    );
+    )
+    .populate({
+      path: 'trainers',
+      populate: {
+        path: 'user',
+        select: '-password'
+      }
+    })
+    .populate({
+      path: 'players',
+      populate: {
+        path: 'user',
+        select: '-password'
+      }
+    });
+    
     if (!updatedTeam) {
       return res.status(404).json({ message: "Team nicht gefunden" });
     }
+    
+    console.log("Team aktualisiert:", updatedTeam._id, "Tags:", updatedTeam.tags);
     res.status(200).json(updatedTeam);
   } catch (err) {
     console.error("Fehler beim Bearbeiten des Teams:", err.message);
     res.status(500).json({ message: "Fehler beim Bearbeiten des Teams" });
   }
 });
+
+
 
 // Team löschen
 router.delete("/teams/:id", authMiddleware, adminMiddleware, async (req, res) => {

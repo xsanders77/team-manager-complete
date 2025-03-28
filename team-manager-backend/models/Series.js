@@ -10,15 +10,15 @@ const seriesSchema = new mongoose.Schema({
   location: { type: String, required: true },
   description: { type: String },
   teamId: { type: mongoose.Schema.Types.ObjectId, ref: "Team" },
-  maxParticipants: { type: Number },
-  tags: [String], // Subgruppen
+  maxParticipants: { type: Number, min: 1 }, // Ensure it's a positive integer
+  tags: [{ type: String, default: [] }], // Subgruppen
   repeatRule: {
     frequency: { type: String, enum: ["weekly", "biweekly"], required: true },
     repeatDays: [{ type: Number }], // 0-6 für Montag-Sonntag
     startDate: { type: Date, required: true },
     endDate: { type: Date, required: true },
   },
-  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
 });
 
 module.exports = mongoose.model("Series", seriesSchema);

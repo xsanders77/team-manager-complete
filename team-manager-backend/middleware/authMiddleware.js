@@ -12,7 +12,7 @@ const authMiddleware = (req, res, next) => {
   console.log("Empfangenes Token:", token); // Debugging: Token in die Logs schreiben
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || "supersecret");
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded; // Benutzerinformationen aus dem Token
     next();
   } catch (err) {

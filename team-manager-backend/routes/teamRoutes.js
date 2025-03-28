@@ -36,10 +36,17 @@ router.get("/", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     const { name, trainers, tags, players } = req.body;
+
+    // Validate required fields
+    if (!name || !trainers || !Array.isArray(trainers) || !players || !Array.isArray(players)) {
+      return res.status(400).json({ message: "Name, Trainer und Spieler sind erforderlich." });
+    }
+
     const newTeam = new Team({ name, trainers, tags, players });
     const savedTeam = await newTeam.save();
     res.status(201).json(savedTeam);
   } catch (err) {
+    console.error("Fehler beim Erstellen des Teams:", err.message);
     res.status(400).json({ message: "Fehler beim Erstellen des Teams", error: err.message });
   }
 });
@@ -77,6 +84,12 @@ router.get("/:id", async (req, res) => {
 router.put("/:id", async (req, res) => {
   try {
     const { name, trainers, tags, players } = req.body;
+
+    // Validate required fields
+    if (!name || !trainers || !Array.isArray(trainers) || !players || !Array.isArray(players)) {
+      return res.status(400).json({ message: "Name, Trainer und Spieler sind erforderlich." });
+    }
+
     const updatedTeam = await Team.findByIdAndUpdate(
       req.params.id,
       { name, trainers, tags, players },
@@ -114,6 +127,7 @@ router.delete("/:id", async (req, res) => {
     if (!deletedTeam) return res.status(404).json({ message: "Team nicht gefunden" });
     res.json({ message: "Team erfolgreich gelöscht" });
   } catch (err) {
+    console.error("Fehler beim Löschen des Teams:", err.message);
     res.status(500).json({ message: "Fehler beim Löschen des Teams", error: err.message });
   }
 });

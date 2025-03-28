@@ -26,40 +26,44 @@ const idConversionMiddleware = async (req, res, next) => {
       
       // Wenn kein Trainer gefunden wurde, prüfe, ob es eine User-ID ist
       if (!trainer) {
-        console.log('Kein Trainer mit dieser ID gefunden, prüfe User');
+        console.log('Kein Trainer mit dieser User-ID gefunden, erstelle einen neuen');
         
-        // Prüfe, ob ein User mit dieser ID existiert
-        const user = await User.findById(trainerId);
-        
-        if (!user) {
-          return res.status(404).json({ message: 'Weder Trainer noch User mit dieser ID gefunden' });
+        // Hole die vollständigen User-Daten
+        const userDetails = await User.findById(trainerId).select('-password');
+        if (!userDetails) {
+          return res.status(404).json({ message: 'User nicht gefunden' });
         }
         
-        // Prüfe, ob der User die Rolle "trainer" oder "admin" hat
-        if (user.role !== 'trainer' && user.role !== 'admin') {
-          return res.status(400).json({ message: 'Der User hat nicht die Rolle "trainer" oder "admin"' });
-        }
+        console.log('Trainer ID:', trainerId); // Log the trainer ID being checked
+
+        // Check for specialization
+        //if (!req.body.specialization) {
+        //  console.error('Spezialisierung fehlt'); // Log if specialization is missing
+        //  return res.status(400).json({ message: 'Spezialisierung ist erforderlich' });
+       // }
+
+        // Erstelle einen neuen Trainer mit allen erforderlichen Feldern
+        //trainer = new Trainer({
+        //  user: trainerId,
+        //  teams: [],
+        //  qualifications: [],
+          // specialization: req.body.specialization // This line will be removed
+        //});
         
-        // Suche nach einem Trainer mit dieser User-ID
-        trainer = await Trainer.findOne({ user: trainerId });
-        
-        // Wenn kein Trainer gefunden wurde, erstelle einen neuen
-        if (!trainer) {
-          console.log('Kein Trainer mit dieser User-ID gefunden, erstelle einen neuen');
-          trainer = new Trainer({
-            user: trainerId,
-            teams: []
-          });
+        try {
           await trainer.save();
           console.log('Neuer Trainer erstellt:', trainer._id);
+        } catch (err) {
+          console.error('Fehler beim Erstellen des Trainers:', err);
+          return res.status(500).json({ 
+            message: 'Fehler beim Erstellen des Trainers', 
+            error: err.message,
+            details: 'Möglicherweise fehlen erforderliche Felder oder es gibt einen Konflikt mit bestehenden Daten.'
+          });
         }
-        
-        // Ersetze die User-ID durch die Trainer-ID
-        req.body.trainerId = trainer._id.toString();
-        console.log('ID konvertiert von User-ID zu Trainer-ID:', trainerId, '->', req.body.trainerId);
       }
     }
-    
+
     // Prüfe, ob wir einen Spieler hinzufügen
     if (req.path.includes('/players') && req.body.playerId) {
       const playerId = req.body.playerId;
@@ -111,7 +115,7 @@ const idConversionMiddleware = async (req, res, next) => {
         console.log('ID konvertiert von User-ID zu Spieler-ID:', playerId, '->', req.body.playerId);
       }
     }
-    
+
     next();
   } catch (error) {
     console.error('Fehler in der ID-Konvertierungs-Middleware:', error);
