@@ -26,7 +26,8 @@ const teamService = {
    * @returns {Promise<Object>} - Erstelltes Team
    */
   async createTeam(teamData) {
-    const response = await api.post('/admin/teams', teamData);
+    // Korrigierter Pfad mit /api/admin statt /admin
+    const response = await api.post('/teams', teamData);
     return response.data;
   },
 
@@ -37,6 +38,7 @@ const teamService = {
    * @returns {Promise<Object>} - Aktualisiertes Team
    */
   async updateTeam(teamId, teamData) {
+    // Korrigierter Pfad mit /api/admin statt /admin
     const response = await api.put(`/admin/teams/${teamId}`, teamData);
     return response.data;
   },
@@ -47,7 +49,8 @@ const teamService = {
    * @returns {Promise<Object>} - Löschergebnis
    */
   async deleteTeam(teamId) {
-    const response = await api.delete(`/admin/teams/${teamId}`);
+    // Korrigierter Pfad mit /api/admin statt /admin
+    const response = await api.delete(`/teams/${teamId}`);
     return response.data;
   },
 
@@ -58,6 +61,7 @@ const teamService = {
    * @returns {Promise<Object>} - Aktualisiertes Team
    */
   async addTrainerToTeam(teamId, trainerId) {
+    // Korrigierter Pfad mit /api/admin statt /admin
     const response = await api.post(`/admin/teams/${teamId}/trainers`, { trainerId });
     return response.data;
   },
@@ -69,6 +73,7 @@ const teamService = {
    * @returns {Promise<Object>} - Aktualisiertes Team
    */
   async addPlayerToTeam(teamId, playerId) {
+    // Korrigierter Pfad mit /api/admin statt /admin
     const response = await api.post(`/admin/teams/${teamId}/players`, { playerId });
     return response.data;
   },
@@ -80,7 +85,8 @@ const teamService = {
    * @returns {Promise<Object>} - Aktualisiertes Team
    */
   async updateTeamTrainers(teamId, trainerIds) {
-    const response = await api.put(`/admin/teams/${teamId}/trainers`, { trainerIds });
+    // Korrigierter Pfad mit /api/admin statt /admin
+    const response = await api.put(`/teams/${teamId}/trainers`, { trainerIds });
     return response.data;
   },
 
@@ -91,7 +97,8 @@ const teamService = {
    * @returns {Promise<Object>} - Aktualisiertes Team
    */
   async updateTeamPlayers(teamId, playerIds) {
-    const response = await api.put(`/admin/teams/${teamId}/players`, { playerIds });
+    // Korrigierter Pfad mit /api/admin statt /admin
+    const response = await api.put(`/teams/${teamId}/players`, { playerIds });
     return response.data;
   }
 };
