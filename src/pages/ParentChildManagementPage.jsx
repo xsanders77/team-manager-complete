@@ -63,6 +63,9 @@ const ParentChildManagementPage = () => {
       const selectedTeam = teams.find(team => team._id === newChild.teamId || team.id === newChild.teamId);
       
       const childData = {
+          user: user?._id, // Set the user ID as the player user
+          birthDate: newChild.birthDate, // Map birthdate to birthDate
+          teams: [newChild.teamId], // Include the team ID if needed
         name: newChild.name,
         birthdate: newChild.birthdate,
         teamId: newChild.teamId,

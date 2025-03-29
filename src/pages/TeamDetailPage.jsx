@@ -106,7 +106,9 @@ const TeamDetailPage = () => {
 
   const handleSaveTeam = async () => {
     try {
+      
       await updateTeamMutation.mutateAsync({ teamId, teamData: editedTeam });
+      console.log('Übergebene Team-Daten:', editedTeam);
       setIsEditing(false);
       setNotification({
         type: 'success',

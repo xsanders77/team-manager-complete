@@ -38,6 +38,7 @@ const teamService = {
    * @returns {Promise<Object>} - Aktualisiertes Team
    */
   async updateTeam(teamId, teamData) {
+    console.log('Übergebene Team-Daten:', teamData);
     // Korrigierter Pfad mit /api/admin statt /admin
     const response = await api.put(`/admin/teams/${teamId}`, teamData);
     return response.data;

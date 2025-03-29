@@ -120,6 +120,25 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+ // Spieler erstellen
+router.post("/players", async (req, res) => {
+    try {
+        const { user, birthDate, teams } = req.body;
+
+        // Validate required fields
+        if (!user || !birthDate) {
+            return res.status(400).json({ message: "User und Geburtsdatum sind erforderlich." });
+        }
+
+        const newPlayer = new Player({ user, birthDate, teams });
+        const savedPlayer = await newPlayer.save();
+        res.status(201).json(savedPlayer);
+    } catch (err) {
+        console.error("Fehler beim Erstellen des Spielers:", err.message);
+        res.status(500).json({ message: "Fehler beim Erstellen des Spielers", error: err.message });
+    }
+});
+
 // Team löschen
 router.delete("/:id", async (req, res) => {
   try {

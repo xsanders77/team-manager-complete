@@ -1,8 +1,11 @@
-import React, { createContext, useReducer, useEffect, useCallback } from 'react';
+import React, { createContext, useReducer, useEffect, useCallback, useState, useContext } from 'react';
 import authService from '../services/authService';
 
 // Kontext erstellen
 export const AuthContext = createContext();
+
+// Custom Hook, um den AuthContext leichter zu nutzen
+export const useAuth = () => useContext(AuthContext);
 
 // Anfangszustand
 const initialState = {
@@ -33,12 +36,25 @@ function authReducer(state, action) {
 export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
-  // ✅ Benutzerprofil abrufen (z. B. beim Reload)
+  // overrideRole initialisieren und im localStorage persistieren
+  const [overrideRole, setOverrideRole] = useState(() => localStorage.getItem('overrideRole') || null);
+
+  // Funktion, um den Override-Wert zu setzen und zu persistieren
+  const updateOverrideRole = (role) => {
+    setOverrideRole(role);
+    if (role) {
+      localStorage.setItem('overrideRole', role);
+    } else {
+      localStorage.removeItem('overrideRole');
+    }
+  };
+
+  // ✅ Benutzerprofil abrufen (z. B. beim Reload)
   const fetchUserProfile = useCallback(async () => {
     dispatch({ type: 'AUTH_START' });
 
     try {
-      const token = localStorage.getItem('auth_token'); // 🛠 hier war der Fehler
+      const token = localStorage.getItem('auth_token');
       if (!token) {
         dispatch({ type: 'AUTH_LOGOUT' });
         return;
@@ -58,13 +74,11 @@ export const AuthProvider = ({ children }) => {
   // ✅ Anmeldung
   const login = async (credentials) => {
     dispatch({ type: 'AUTH_START' });
-
     try {
       const { token, user } = await authService.login(credentials);
-      localStorage.setItem('auth_token', token); // 🛠 wichtig!
+      localStorage.setItem('auth_token', token);
       localStorage.setItem('userId', user.id);
       localStorage.setItem('role', user.role);
-
       dispatch({ type: 'AUTH_SUCCESS', payload: user });
       return user;
     } catch (err) {
@@ -77,13 +91,11 @@ export const AuthProvider = ({ children }) => {
   // ✅ Registrierung
   const signup = async (userData) => {
     dispatch({ type: 'AUTH_START' });
-
     try {
       const { token, user } = await authService.signup(userData);
       localStorage.setItem('auth_token', token);
       localStorage.setItem('userId', user.id);
       localStorage.setItem('role', user.role);
-
       dispatch({ type: 'AUTH_SUCCESS', payload: user });
       return user;
     } catch (err) {
@@ -98,6 +110,8 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('auth_token');
     localStorage.removeItem('userId');
     localStorage.removeItem('role');
+    localStorage.removeItem('overrideRole');
+    updateOverrideRole(null);
     dispatch({ type: 'AUTH_LOGOUT' });
   };
 
@@ -133,14 +147,21 @@ export const AuthProvider = ({ children }) => {
     fetchUserProfile();
   }, [fetchUserProfile]);
 
+  // Berechne effektiven Benutzer, indem overrideRole berücksichtigt wird
+  const effectiveUser = state.user
+    ? { ...state.user, role: overrideRole || state.user.role }
+    : null;
+
   const contextValue = {
     ...state,
+    user: effectiveUser,
     login,
     signup,
     logout,
     resetPassword,
     updateProfile,
-    fetchUserProfile
+    fetchUserProfile,
+    setOverrideRole: updateOverrideRole
   };
 
   return (

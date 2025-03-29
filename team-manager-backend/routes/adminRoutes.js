@@ -87,6 +87,7 @@ router.delete("/teams/:id", authMiddleware, adminMiddleware, async (req, res) =>
   }
 });
 
+
 // Trainer zu Team hinzufügen
 router.post("/teams/:teamId/trainers", authMiddleware, idConversionMiddleware, async (req, res) => {
   const { trainerId } = req.body;

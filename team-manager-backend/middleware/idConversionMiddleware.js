@@ -14,7 +14,8 @@ const idConversionMiddleware = async (req, res, next) => {
     if (req.path.includes('/trainers') && req.body.trainerId) {
       const trainerId = req.body.trainerId;
       
-      console.log('ID-Konvertierung: Prüfe Trainer-ID', trainerId);
+      console.log('ID-Konvertierung: Prüfe Trainer-ID', trainerId); // Debugging: Log trainer ID check
+      console.log('Angeforderte Benutzer-ID:', req.body.trainerId); // Debugging: Log requested user ID
       
       // Prüfe, ob die ID ein gültiges ObjectId-Format hat
       if (!mongoose.Types.ObjectId.isValid(trainerId)) {
@@ -26,42 +27,38 @@ const idConversionMiddleware = async (req, res, next) => {
       
       // Wenn kein Trainer gefunden wurde, prüfe, ob es eine User-ID ist
       if (!trainer) {
-        console.log('Kein Trainer mit dieser User-ID gefunden, erstelle einen neuen');
+        console.log('Kein Trainer mit dieser ID gefunden, prüfe User');
         
-        // Hole die vollständigen User-Daten
-        const userDetails = await User.findById(trainerId).select('-password');
-        if (!userDetails) {
-          return res.status(404).json({ message: 'User nicht gefunden' });
+        // Prüfe, ob ein User mit dieser ID existiert
+        const user = await User.findById(trainerId).select('-password');
+        
+        if (!user) {
+          return res.status(404).json({ message: 'Weder Trainer noch User mit dieser ID gefunden' });
         }
         
-        console.log('Trainer ID:', trainerId); // Log the trainer ID being checked
-
-        // Check for specialization
-        //if (!req.body.specialization) {
-        //  console.error('Spezialisierung fehlt'); // Log if specialization is missing
-        //  return res.status(400).json({ message: 'Spezialisierung ist erforderlich' });
-       // }
-
-        // Erstelle einen neuen Trainer mit allen erforderlichen Feldern
-        //trainer = new Trainer({
-        //  user: trainerId,
-        //  teams: [],
-        //  qualifications: [],
-          // specialization: req.body.specialization // This line will be removed
-        //});
+        // Prüfe, ob der User die Rolle "trainer" oder "admin" hat
+        if (user.role !== 'trainer' && user.role !== 'admin') {
+          return res.status(400).json({ message: 'Der User hat nicht die Rolle "trainer" oder "admin"' });
+        }
         
-        try {
-          await trainer.save();
-          console.log('Neuer Trainer erstellt:', trainer._id);
-        } catch (err) {
-          console.error('Fehler beim Erstellen des Trainers:', err);
-          return res.status(500).json({ 
-            message: 'Fehler beim Erstellen des Trainers', 
-            error: err.message,
-            details: 'Möglicherweise fehlen erforderliche Felder oder es gibt einen Konflikt mit bestehenden Daten.'
+        console.log('User gefunden:', user.email, 'Rolle:', user.role);
+        
+        // Suche nach einem Trainer mit dieser User-ID
+        trainer = await Trainer.findOne({ user: trainerId });
+        
+        // Wenn kein Trainer gefunden wurde, gib eine Fehlermeldung zurück
+        if (!trainer) {
+          console.log('Kein Trainer mit dieser User-ID gefunden');
+          return res.status(404).json({ 
+            message: 'Kein Trainer für diesen Benutzer gefunden', 
+            details: 'Bitte erstellen Sie zuerst einen Trainer für diesen Benutzer in der Userverwaltung.'
           });
         }
       }
+      
+      // Ersetze die User-ID durch die Trainer-ID
+      req.body.trainerId = trainer._id.toString();
+      console.log('ID konvertiert von User-ID zu Trainer-ID:', trainerId, '->', req.body.trainerId);
     }
 
     // Prüfe, ob wir einen Spieler hinzufügen
@@ -97,17 +94,13 @@ const idConversionMiddleware = async (req, res, next) => {
         // Suche nach einem Spieler mit dieser User-ID
         player = await Player.findOne({ user: playerId });
         
-        // Wenn kein Spieler gefunden wurde, erstelle einen neuen
+        // Wenn kein Spieler gefunden wurde, gib eine Fehlermeldung zurück
         if (!player) {
-          console.log('Kein Spieler mit dieser User-ID gefunden, erstelle einen neuen');
-          // Für einen Spieler benötigen wir ein Geburtsdatum, setzen wir ein Dummy-Datum
-          player = new Player({
-            user: playerId,
-            birthDate: new Date('2000-01-01'), // Dummy-Datum
-            teams: []
+          console.log('Kein Spieler mit dieser User-ID gefunden');
+          return res.status(404).json({ 
+            message: 'Kein Spieler für diesen Benutzer gefunden', 
+            details: 'Bitte erstellen Sie zuerst einen Spieler für diesen Benutzer in der Userverwaltung.'
           });
-          await player.save();
-          console.log('Neuer Spieler erstellt:', player._id);
         }
         
         // Ersetze die User-ID durch die Spieler-ID

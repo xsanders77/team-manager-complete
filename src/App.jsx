@@ -5,6 +5,10 @@ import PrivateRoute from './components/auth/PrivateRoute';
 import RoleBasedRoute from './components/auth/RoleBasedRoute';
 import RoleBasedRedirect from './components/auth/RoleBasedRedirect';
 
+
+// Importiere den Debug-RoleSwitcher
+import RoleSwitcher from './components/RoleSwitcher';
+
 // Layouts
 import AppLayout from './layouts/AppLayout';
 import AuthLayout from './layouts/AuthLayout';
@@ -58,6 +62,8 @@ const App = () => {
   return (
     <AuthProvider>
       <BrowserRouter>
+        {/* RoleSwitcher nur im Entwicklungsmodus anzeigen */}
+        {process.env.NODE_ENV === 'development' && <RoleSwitcher />}
         <Routes>
           {/* Öffentliche Routen */}
           <Route element={<AuthLayout />}>
