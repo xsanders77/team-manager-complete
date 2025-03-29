@@ -14,10 +14,23 @@ router.get("/", async (req, res) => {
   }
 });
 
- // Alle Trainer abrufen
- router.get("/trainers", async (req, res) => {
+router.get("/players", async (req, res) => {
+  console.log("Received request for all players"); // Log request receipt
   try {
-      const trainers = await Trainer.find().populate('user', '-password'); // Populate user details without password
+      const players = await Player.find(); // Populate user details without password
+      console.log("Trainers fetched:", players); // Log the trainers to the console
+      res.status(200).json(players);
+  } catch (err) {
+      console.error("Fehler beim Abrufen der Trainer:", err.message);
+      res.status(500).json({ message: "Fehler beim Abrufen der Trainer" });
+  }
+});
+
+router.get("/trainers", async (req, res) => {
+  console.log("Received request for all trainers"); // Log request receipt
+  try {
+      const trainers = await Trainer.find(); // Populate user details without password
+      console.log("Trainers fetched:", trainers); // Log the trainers to the console
       res.status(200).json(trainers);
   } catch (err) {
       console.error("Fehler beim Abrufen der Trainer:", err.message);
@@ -25,8 +38,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-
-// Neuen Benutzer erstellen
 router.post("/", async (req, res) => {
   try {
     const newUser = new User(req.body);
@@ -146,7 +157,6 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-// Benutzer abrufen mit ID
 
 router.get("/:id", async (req, res) => {
   const userId = req.params.id;

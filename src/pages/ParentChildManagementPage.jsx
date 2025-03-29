@@ -50,7 +50,7 @@ const ParentChildManagementPage = () => {
     e.preventDefault();
     
     // Einfache Validierung
-    if (!newChild.name || !newChild.birthdate || !newChild.teamId) {
+    if (!newChild.name || !newChild.birthDate || !newChild.teamId) {
       setNotification({
         type: 'error',
         message: 'Bitte füllen Sie alle Pflichtfelder aus.'
@@ -63,11 +63,11 @@ const ParentChildManagementPage = () => {
       const selectedTeam = teams.find(team => team._id === newChild.teamId || team.id === newChild.teamId);
       
       const childData = {
-          user: user?._id, // Set the user ID as the player user
-          birthDate: newChild.birthDate, // Map birthdate to birthDate
-          teams: [newChild.teamId], // Include the team ID if needed
+        user: user?._id, // Set the user ID as the player user
+          
+        teams: [newChild.teamId], // Include the team ID if needed
         name: newChild.name,
-        birthdate: newChild.birthdate,
+        birthDate: newChild.birthDate,
         teamId: newChild.teamId,
         parentId: user?._id,
         // Weitere Daten, die vom Backend erwartet werden könnten

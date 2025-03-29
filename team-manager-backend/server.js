@@ -28,8 +28,9 @@ app.use(express.json());
 
 // Benutzer-API-Routen
 app.use("/api/users", userRoutes);
-//app.use("/api/trainers", trainerRoutes); // Correctly register the trainer routes
-app.use("/api/players", teamRoutes); // Register the player routes
+app.use("/api/trainers", userRoutes); // Correctly point to the alltrainers route
+app.use("/api/players", userRoutes); // 
+app.use("/api/teamplayers", teamRoutes); // Register the player routes
 app.use("/api/teams", teamRoutes);
 app.use("/api/events", eventRoutes);
 app.use("/api/series", seriesRoutes);
